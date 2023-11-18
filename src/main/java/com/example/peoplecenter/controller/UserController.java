@@ -139,7 +139,7 @@ public class UserController {
     }
 
     /**
-     * 用户推荐
+     * 用户推荐，分页查询
      * @param request
      * @return
      */
