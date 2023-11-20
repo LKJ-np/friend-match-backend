@@ -50,7 +50,7 @@ public class InsertUsers {
 //            user.setTags("[]");
 //            userList.add(user);
 //        }
-//        userService.saveBatch(userList);
+//        userService.saveBatch(userList,10000);
 //        stopWatch.stop();
 //        System.out.println(stopWatch.getLastTaskTimeMillis());
 //    }

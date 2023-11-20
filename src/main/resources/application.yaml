@@ -16,7 +16,7 @@ spring:
   redis:
     port: 6379
     host: localhost
-    database: 0
+    database: 1
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false

@@ -10,7 +10,10 @@ import com.example.peoplecenter.model.User;
 import com.example.peoplecenter.model.request.login;
 import com.example.peoplecenter.model.request.regist;
 import com.example.peoplecenter.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -21,13 +24,16 @@ import static com.example.peoplecenter.common.ErrorCode.*;
 import static com.example.peoplecenter.constant.UserContant.USER_LOGIN_STATE;
 
 
-
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @Resource
     UserService userService;
+
+    @Resource
+    RedisTemplate<String,Object> redisTemplate;
 
     /**
      * 用户注册
@@ -139,15 +145,31 @@ public class UserController {
     }
 
     /**
-     * 用户推荐，分页查询
+     * 用户推荐，分页查询，设置缓存，先缓存一批数据
      * @param request
      * @return
      */
     @GetMapping("/recommand")
     public BaseResponse <Page<User>> recomandUsers(long pageSize, long pageNum, HttpServletRequest request){
+        //todo 将这段代码写入业务层
+        User currentUser = userService.getCurrentUser(request);
+        //如果有缓存，直接读取缓存
+        String redisKey = String.format("friend:user:recommend:%s",currentUser.getId());
+        ValueOperations<String, Object> stringObjectValueOperations = redisTemplate.opsForValue();
+        Page<User> userPage =(Page<User>)stringObjectValueOperations.get(redisKey);
+        if (userPage !=null){
+            return ResultUtil.success(userPage);
+        }
+        //无缓存，查询数据库
         QueryWrapper<User> queryWrapper =new QueryWrapper<>();
-        Page<User> userList = userService.page(new Page<>(pageNum,pageSize),queryWrapper);
-        return ResultUtil.success(userList);
+        userService.page(new Page<>(pageNum,pageSize),queryWrapper);
+        //写缓存,如果缓存写入失败，将返回的值返回前端
+        try {
+            stringObjectValueOperations.set(redisKey,userPage);
+        } catch (Exception e) {
+           log.error("redis set key error",e);
+        }
+        return ResultUtil.success(userPage);
     }
 
     /**
