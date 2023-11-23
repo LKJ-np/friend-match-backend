@@ -2,7 +2,7 @@ package com.example.peoplecenter.job;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.peoplecenter.model.User;
+import com.example.peoplecenter.model.domain.User;
 import com.example.peoplecenter.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
