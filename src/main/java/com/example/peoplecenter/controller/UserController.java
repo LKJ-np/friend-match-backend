@@ -6,7 +6,7 @@ import com.example.peoplecenter.common.BaseResponse;
 import com.example.peoplecenter.common.ErrorCode;
 import com.example.peoplecenter.common.ResultUtil;
 import com.example.peoplecenter.exception.BusinessException;
-import com.example.peoplecenter.model.User;
+import com.example.peoplecenter.model.domain.User;
 import com.example.peoplecenter.model.request.login;
 import com.example.peoplecenter.model.request.regist;
 import com.example.peoplecenter.service.UserService;
