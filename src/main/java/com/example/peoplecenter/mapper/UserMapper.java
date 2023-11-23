@@ -2,7 +2,7 @@ package com.example.peoplecenter.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.peoplecenter.model.User;
+import com.example.peoplecenter.model.domain.User;
 
 /**
  * @author PC
