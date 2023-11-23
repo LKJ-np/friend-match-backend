@@ -1,4 +1,4 @@
-package com.example.peoplecenter.model;
+package com.example.peoplecenter.model.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
 
