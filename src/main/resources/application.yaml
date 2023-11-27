@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://localhost:3306/people
+    url: jdbc:mysql://localhost:3306/people?&serverTimezone=UTC
   session:
     timeout: 86400
     store-type: redis

@@ -18,5 +18,10 @@ import java.util.List;
 */
 public interface TeamService extends IService<Team> {
 
-
+    /**
+     * 添加队伍
+     * @param team
+     * @return
+     */
+    long addTeam(Team team,User loginuser);
 }

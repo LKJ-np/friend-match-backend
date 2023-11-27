@@ -7,12 +7,16 @@ import com.example.peoplecenter.common.ErrorCode;
 import com.example.peoplecenter.common.ResultUtil;
 import com.example.peoplecenter.exception.BusinessException;
 import com.example.peoplecenter.model.domain.Team;
+import com.example.peoplecenter.model.domain.User;
 import com.example.peoplecenter.model.dto.TeamQuery;
+import com.example.peoplecenter.model.request.TeamAddRequest;
 import com.example.peoplecenter.service.TeamService;
+import com.example.peoplecenter.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -31,16 +35,19 @@ public class TeamController {
     @Resource
     TeamService teamService;
 
+    @Resource
+    UserService userService;
+
     @PostMapping("/add")
-    public BaseResponse<Long> addTeam(@RequestBody Team team){
-        if (team == null){
+    public BaseResponse<Long> addTeam(@RequestBody TeamAddRequest teamAddRequest, HttpServletRequest request){
+        if (teamAddRequest == null){
             throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
-        boolean result = teamService.save(team);
-        if (!result){
-            throw new BusinessException(ErrorCode.PARAM_ERROR,"插入失败");
-        }
-        return ResultUtil.success(team.getId());
+        User currentUser = userService.getCurrentUser(request);
+        Team team = new Team();
+        BeanUtils.copyProperties(teamAddRequest,team);
+        long addTeam = teamService.addTeam(team,currentUser);
+        return ResultUtil.success(addTeam);
     }
 
     @PostMapping("/delete")
