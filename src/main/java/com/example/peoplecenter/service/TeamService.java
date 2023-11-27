@@ -24,4 +24,12 @@ public interface TeamService extends IService<Team> {
      * @return
      */
     long addTeam(Team team,User loginuser);
+
+    /**
+     * 查询队伍
+     * @param teamQuery
+     * @param isAdmin
+     * @return
+     */
+    List<TeamUserVO> listTeam(TeamQuery teamQuery, boolean isAdmin);
 }

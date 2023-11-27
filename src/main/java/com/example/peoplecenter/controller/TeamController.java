@@ -10,6 +10,7 @@ import com.example.peoplecenter.model.domain.Team;
 import com.example.peoplecenter.model.domain.User;
 import com.example.peoplecenter.model.dto.TeamQuery;
 import com.example.peoplecenter.model.request.TeamAddRequest;
+import com.example.peoplecenter.model.vo.TeamUserVO;
 import com.example.peoplecenter.service.TeamService;
 import com.example.peoplecenter.service.UserService;
 import org.springframework.beans.BeanUtils;
@@ -87,15 +88,15 @@ public class TeamController {
     }
 
     @GetMapping("/list")
-    public BaseResponse<List<Team>> getlistTeam(TeamQuery teamQuery){
+    public BaseResponse<List<TeamUserVO>> getlistTeam(TeamQuery teamQuery,HttpServletRequest request){
         if (teamQuery == null){
             throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
-        Team team = new Team();
-        //将teamQuery的东西复制到team里
-        BeanUtils.copyProperties(teamQuery,team);
-        QueryWrapper<Team> queryWrapper = new QueryWrapper<>(team);
-        List<Team> teamList = teamService.list(queryWrapper);
+//        Team team = new Team();
+//        //将teamQuery的东西复制到team里
+//        BeanUtils.copyProperties(teamQuery,team);
+        boolean admin = userService.isAdmin(request);
+        List<TeamUserVO> teamList = teamService.listTeam(teamQuery,admin);
         return ResultUtil.success(teamList);
     }
 

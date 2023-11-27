@@ -1,5 +1,6 @@
 package com.example.peoplecenter.service.impl;
 
+import ch.qos.logback.classic.pattern.EnsureExceptionHandling;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.peoplecenter.common.ErrorCode;
@@ -40,6 +41,15 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
     @Resource
     UserTeamService userTeamService;
 
+    @Resource
+    UserService userService;
+
+    /**
+     * 添加队伍
+     * @param team
+     * @param loginuser
+     * @return
+     */
     @Override
     public long addTeam(Team team,User loginuser) {
         //判断参数是否为空
@@ -111,6 +121,88 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
             throw new BusinessException(ErrorCode.PARAM_ERROR,"创建队伍失败");
         }
         return teamId;
+    }
+
+    /**
+     * 搜索队伍
+     * @param teamQuery
+     * @param isAdmin
+     * @return
+     */
+    @Override
+    public List<TeamUserVO> listTeam(TeamQuery teamQuery, boolean isAdmin) {
+        QueryWrapper<Team> queryWrapper = new QueryWrapper<>();
+        //组合查询条件
+        if (teamQuery != null){
+            Long id = teamQuery.getId();
+            if (id != null && id > 0){
+                queryWrapper.eq("id",id);
+            }
+            List<Long> idList = teamQuery.getIdList();
+            if (CollectionUtils.isNotEmpty(idList)){
+                queryWrapper.eq("id",idList);
+            }
+            String searchText = teamQuery.getSearchText();
+            if (StringUtils.isNotBlank(searchText)){
+                queryWrapper.and(qw->qw.like("name",searchText).or().like("description",searchText));
+            }
+            String name = teamQuery.getName();
+            if (StringUtils.isNotBlank(name)){
+                queryWrapper.like("name",name);
+            }
+            String description = teamQuery.getDescription();
+            if (StringUtils.isNotBlank(description)){
+                queryWrapper.like("description",description);
+            }
+            Integer maxNum = teamQuery.getMaxNum();
+            //查询最大人数相等的
+            if (maxNum != null && maxNum >0){
+                queryWrapper.eq("maxNum",maxNum);
+            }
+            Long userId = teamQuery.getUserId();
+            //根据创建人来查询
+            if (userId != null && userId > 0){
+                queryWrapper.eq("userId",userId);
+            }
+            //根据状态来查询
+            Integer status = teamQuery.getStatus();
+            TeamStatusEnum enumByValue = TeamStatusEnum.getEnumByValue(status);
+            if (enumByValue == null){
+                enumByValue = TeamStatusEnum.PUBLIC;
+            }
+            if (!isAdmin && enumByValue.equals(TeamStatusEnum.PRIVATE)){
+                throw new BusinessException(ErrorCode.NO_AUTH);
+            }
+            queryWrapper.eq("status",enumByValue.getValue());
+        }
+        //不展示已过期的队伍
+        //expireTime is null or expireTime > now()
+        queryWrapper.and(qw->qw.gt("expireTime",new Date()).or().isNotNull("expireTime"));
+        List<Team> teamList = this.list(queryWrapper);
+        if (CollectionUtils.isNotEmpty(teamList)){
+            return new ArrayList<>();
+        }
+
+        List<TeamUserVO> teamUserVOS = new ArrayList<>();
+        //关联查询创建人的用户信息
+        for (
+                Team team : teamList){
+            Long userId = team.getUserId();
+            if (userId == null){
+                continue;
+            }
+        User user = userService.getById(userId);
+        TeamUserVO teamUserVO = new TeamUserVO();
+        BeanUtils.copyProperties(team,teamUserVO);
+        //脱敏用户信息
+            if (user !=null){
+                UserVO userVO = new UserVO();
+                BeanUtils.copyProperties(user,userVO);
+                teamUserVO.setCreateUser(userVO);
+            }
+            teamUserVOS.add(teamUserVO);
+        }
+        return teamUserVOS;
     }
 }
 
