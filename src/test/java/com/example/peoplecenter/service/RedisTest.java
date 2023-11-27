@@ -1,6 +1,6 @@
 package com.example.peoplecenter.service;
 
-import com.example.peoplecenter.model.User;
+import com.example.peoplecenter.model.domain.User;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

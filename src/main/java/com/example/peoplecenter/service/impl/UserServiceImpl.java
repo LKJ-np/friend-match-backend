@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.peoplecenter.common.ErrorCode;
 import com.example.peoplecenter.exception.BusinessException;
 import com.example.peoplecenter.mapper.UserMapper;
-import com.example.peoplecenter.model.User;
+import com.example.peoplecenter.model.domain.User;
 import com.example.peoplecenter.service.UserService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,17 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import static com.example.peoplecenter.constant.UserContant.ADMIN_ROLE;
 import static com.example.peoplecenter.constant.UserContant.USER_LOGIN_STATE;
 

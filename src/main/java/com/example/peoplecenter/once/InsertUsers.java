@@ -2,8 +2,7 @@ package com.example.peoplecenter.once;
 
 
 import com.example.peoplecenter.mapper.UserMapper;
-import com.example.peoplecenter.model.User;
-import org.springframework.scheduling.annotation.Scheduled;
+import com.example.peoplecenter.model.domain.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import javax.annotation.Resource;

@@ -1,17 +1,7 @@
 package com.example.peoplecenter.service;
 
 
-import com.example.peoplecenter.mapper.UserMapper;
-import com.example.peoplecenter.model.User;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.*;
 
 /**
  * @author: lkj

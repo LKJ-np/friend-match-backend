@@ -1,7 +1,9 @@
 package com.example.peoplecenter.service;
 
-import com.example.peoplecenter.model.User;
+import com.example.peoplecenter.model.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.peoplecenter.model.request.TeamJoinRequest;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
 public interface UserService extends IService<User> {
 
     /**
-     *
+     *用户注册
      * @param userAccount 用户账号
      * @param userPassword 用户密码
      * @param checkPassword 校验密码
@@ -22,7 +24,7 @@ public interface UserService extends IService<User> {
     long userRegist(String userAccount , String userPassword ,String checkPassword,String planetCode);
 
     /**
-     *
+     *用户登录
      * @param userAccount 用户账号
      * @param userPassword 用户密码
      * @param request
@@ -43,6 +45,7 @@ public interface UserService extends IService<User> {
      * @return
      */
     int userlogout(HttpServletRequest request);
+
     /**
      * 根据所有标签来查询用户（and,sql查询）
      * @param tagNameList 标签列表
