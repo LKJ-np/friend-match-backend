@@ -1,24 +1,17 @@
 package com.example.peoplecenter.model.request;
 
+import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
+
 /**
- * @Description:用户添加队伍请求体
+ * @Description:用户创建队伍请求体
  * @Author：LKJ
  * @Package：com.example.peoplecenter.model.request
  * @Project：friend-match-backend
  * @name：TeamAddRequest
  * @Date：2023/11/22 21:55
  * @Filename：TeamAddRequest
- */
-
-import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Date;
-
-/**
- * 用户添加队伍请求体
- *
- * @author yupi
  */
 @Data
 public class TeamAddRequest implements Serializable {

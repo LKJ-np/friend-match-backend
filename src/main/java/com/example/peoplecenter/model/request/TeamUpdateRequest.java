@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @Description:
+ * @Description:用户更新队伍请求体
  * @Author：LKJ
  * @Package：com.example.peoplecenter.model.request
  * @Project：friend-match-backend

@@ -10,6 +10,7 @@ import com.example.peoplecenter.model.domain.Team;
 import com.example.peoplecenter.model.domain.User;
 import com.example.peoplecenter.model.dto.TeamQuery;
 import com.example.peoplecenter.model.request.TeamAddRequest;
+import com.example.peoplecenter.model.request.TeamJoinRequest;
 import com.example.peoplecenter.model.request.TeamUpdateRequest;
 import com.example.peoplecenter.model.vo.TeamUserVO;
 import com.example.peoplecenter.service.TeamService;
@@ -114,5 +115,15 @@ public class TeamController {
         QueryWrapper<Team> queryWrapper = new QueryWrapper<>(team);
         Page<Team> resultPage = teamService.page(page, queryWrapper);
         return ResultUtil.success(resultPage);
+    }
+
+    @PostMapping("/join")
+    public BaseResponse<Boolean> joinTeam(@RequestBody TeamJoinRequest teamJoinRequest,HttpServletRequest request){
+        if (teamJoinRequest == null ){
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
+        }
+        User currentUser = userService.getCurrentUser(request);
+        boolean result = teamService.joinTeam(teamJoinRequest,currentUser);
+        return ResultUtil.success(result);
     }
 }
