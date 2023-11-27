@@ -204,6 +204,40 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
         }
         return teamUserVOS;
     }
+
+    /**
+     * 更新队伍
+     * @param team
+     * @param currentUser
+     * @return
+     */
+    @Override
+    public boolean updateTeam(TeamUpdateRequest team, User currentUser) {
+        if (team == null){
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
+        }
+        Long id = team.getId();
+        if (id <= 0 || id == null){
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
+        }
+        Team oldTeam = this.getById(id);
+        if (oldTeam == null){
+            throw new BusinessException(ErrorCode.PARAM_ERROR,"队伍不存在");
+        }
+        //只有管理员或者队伍的创建者可以修改
+        if (oldTeam.getUserId() != currentUser.getId() && !userService.isAdmin(currentUser)){
+            throw new BusinessException(ErrorCode.NO_AUTH);
+        }
+        TeamStatusEnum enumByValue = TeamStatusEnum.getEnumByValue(oldTeam.getStatus());
+        if (enumByValue.equals(TeamStatusEnum.SECRET)){
+            if (StringUtils.isBlank(team.getPassword())){
+                throw new BusinessException(ErrorCode.PARAM_ERROR,"加密房间必须设置密码");
+            }
+        }
+        Team updateTeam = new Team();
+        BeanUtils.copyProperties(oldTeam,updateTeam);
+        return this.updateById(updateTeam);
+    }
 }
 
 
