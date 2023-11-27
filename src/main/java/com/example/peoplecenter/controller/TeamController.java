@@ -11,6 +11,7 @@ import com.example.peoplecenter.model.domain.User;
 import com.example.peoplecenter.model.dto.TeamQuery;
 import com.example.peoplecenter.model.request.TeamAddRequest;
 import com.example.peoplecenter.model.request.TeamJoinRequest;
+import com.example.peoplecenter.model.request.TeamQuitRequest;
 import com.example.peoplecenter.model.request.TeamUpdateRequest;
 import com.example.peoplecenter.model.vo.TeamUserVO;
 import com.example.peoplecenter.service.TeamService;
@@ -54,11 +55,12 @@ public class TeamController {
     }
 
     @PostMapping("/delete")
-    public BaseResponse<Boolean> deleteTeam(@RequestBody long id){
+    public BaseResponse<Boolean> deleteTeam(@RequestBody long id,HttpServletRequest request){
         if (id <=0 ){
             throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
-        boolean result = teamService.removeById(id);
+        User currentUser = userService.getCurrentUser(request);
+        boolean result = teamService.deleteTeam(id,currentUser);
         if (!result){
             throw new BusinessException(ErrorCode.PARAM_ERROR,"删除失败");
         }
@@ -124,6 +126,16 @@ public class TeamController {
         }
         User currentUser = userService.getCurrentUser(request);
         boolean result = teamService.joinTeam(teamJoinRequest,currentUser);
+        return ResultUtil.success(result);
+    }
+
+    @PostMapping("/quit")
+    public BaseResponse<Boolean> quitTeam(@RequestBody TeamQuitRequest teamQuitRequest, HttpServletRequest request){
+        if (teamQuitRequest == null ){
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
+        }
+        User currentUser = userService.getCurrentUser(request);
+        boolean result = teamService.quitTeam(teamQuitRequest,currentUser);
         return ResultUtil.success(result);
     }
 }
