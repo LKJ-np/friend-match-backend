@@ -206,4 +206,18 @@ public class UserController {
         return ResultUtil.success(result);
     }
 
+    /**
+     * 获取最匹配的用户
+     * @param num
+     * @param request
+     * @return
+     */
+    @GetMapping("/match")
+    public BaseResponse<List<User>> matchUsers(long num,HttpServletRequest request){
+        if (num <= 0 || num > 20){
+            throw new BusinessException(PARAM_ERROR);
+        }
+        User currentUser = userService.getCurrentUser(request);
+        return ResultUtil.success(userService.matchUser(num,currentUser));
+    }
 }
