@@ -142,7 +142,6 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
             if (id != null && id > 0) {
                 queryWrapper.eq("id", id);
             }
-            //因为上面是拿的鱼皮的vo,所以这里需要添加
             List<Long> idList = teamQuery.getIdList();
             if (CollectionUtils.isNotEmpty(idList)) {
                 queryWrapper.in("id", idList);
@@ -180,7 +179,6 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
             }
             queryWrapper.eq("status", statusEnum.getValue());
         }
-
         // 不展示已过期的队伍
         // expireTime is null or expireTime > now()
         queryWrapper.and(qw -> qw.gt("expireTime", new Date()).or().isNull("expireTime"));
@@ -188,11 +186,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
         if (CollectionUtils.isEmpty(teamList)) {
             return new ArrayList<>();
         }
-
         List<TeamUserVO> teamUserVOList = new ArrayList<>();
         // 关联查询创建人的用户信息
-        for (
-                Team team : teamList) {
+        for (Team team : teamList) {
             Long userId = team.getUserId();
             if (userId == null) {
                 continue;
