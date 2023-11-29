@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import static com.example.peoplecenter.common.ErrorCode.*;
 import static com.example.peoplecenter.constant.UserContant.USER_LOGIN_STATE;
@@ -27,6 +28,7 @@ import static com.example.peoplecenter.constant.UserContant.USER_LOGIN_STATE;
 @Slf4j
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class UserController {
 
     @Resource
@@ -149,25 +151,26 @@ public class UserController {
      * @param request
      * @return
      */
-    @GetMapping("/recommand")
-    public BaseResponse <Page<User>> recomandUsers(long pageSize, long pageNum, HttpServletRequest request){
+    // todo 推荐多个，未实现
+    @GetMapping("/recommend")
+    public BaseResponse <Page<User>> recomendUsers(long pageSize, long pageNum, HttpServletRequest request){
         //todo 将这段代码写入业务层
-        User currentUser = userService.getCurrentUser(request);
-        //如果有缓存，直接读取缓存
-        String redisKey = String.format("friend:user:recommend:%s",currentUser.getId());
-        ValueOperations<String, Object> stringObjectValueOperations = redisTemplate.opsForValue();
-        Page<User> userPage =(Page<User>)stringObjectValueOperations.get(redisKey);
-        if (userPage !=null){
+        User loginUser = userService.getCurrentUser(request);
+        String redisKey = String.format("yupao:user:recommend:%s", loginUser.getId());
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+        // 如果有缓存，直接读缓存
+        Page<User> userPage = (Page<User>) valueOperations.get(redisKey);
+        if (userPage != null) {
             return ResultUtil.success(userPage);
         }
-        //无缓存，查询数据库
-        QueryWrapper<User> queryWrapper =new QueryWrapper<>();
-        userService.page(new Page<>(pageNum,pageSize),queryWrapper);
+        // 无缓存，查数据库
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        userPage = userService.page(new Page<>(pageNum, pageSize), queryWrapper);
         //写缓存,如果缓存写入失败，将返回的值返回前端
         try {
-            stringObjectValueOperations.set(redisKey,userPage);
+            valueOperations.set(redisKey, userPage, 30000, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-           log.error("redis set key error",e);
+            log.error("redis set key error", e);
         }
         return ResultUtil.success(userPage);
     }
