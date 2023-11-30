@@ -20,7 +20,6 @@ import com.example.peoplecenter.service.UserService;
 import com.example.peoplecenter.service.UserTeamService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -28,6 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * @Description:
@@ -40,7 +42,9 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/team")
-@CrossOrigin(origins = {"http://localhost:3000"})
+//@CrossOrigin(origins = {"http://8.134.201.204:3000"},allowCredentials = "true")
+//@CrossOrigin(origins = {"http://localhost:3000"},allowCredentials = "true")
+//@CrossOrigin(origins = "*",allowCredentials="true",allowedHeaders = "*",methods = {POST,GET})
 public class TeamController {
 
     @Resource

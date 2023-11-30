@@ -23,12 +23,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import static com.example.peoplecenter.common.ErrorCode.*;
 import static com.example.peoplecenter.constant.UserContant.USER_LOGIN_STATE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 
 @Slf4j
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = {"http://localhost:3000"})
+//@CrossOrigin(origins = {"http://8.134.201.204:3000"},allowCredentials = "true")
+//@CrossOrigin(origins = {"http://localhost:3000"},allowCredentials = "true")
+//@CrossOrigin(origins = "*",allowCredentials="true",allowedHeaders = "*",methods = {POST,GET})
 public class UserController {
 
     @Resource
