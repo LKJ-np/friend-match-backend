@@ -2,13 +2,11 @@ package com.example.peoplecenter.service;
 
 import com.example.peoplecenter.model.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.peoplecenter.model.request.TeamJoinRequest;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
-* @author PC
+* @author lkj
 * @description 针对表【user】的数据库操作Service
 * @createDate 2023-11-08 20:45:11
 */
@@ -96,4 +94,16 @@ public interface UserService extends IService<User> {
      * @return
      */
     List<User> matchUser(long num, User loginUser);
+
+    /**
+     * 推荐匹配优化一
+     * @param num
+     * @param loginUser
+     * @return
+     */
+    List<User> matchUser1(int num, User loginUser);
+
+    List<User> matchUser2(int num, User loginUser);
+
+    List<User> matchUser3(int num, User loginUser);
 }

@@ -227,4 +227,49 @@ public class UserController {
         User currentUser = userService.getCurrentUser(request);
         return ResultUtil.success(userService.matchUser(num,currentUser));
     }
+
+    /**
+     * 获取最匹配的用户：优化一
+     * @param num
+     * @param request
+     * @return
+     */
+    @GetMapping("/match1")
+    public BaseResponse<List<User>> matchUsers1(int num,HttpServletRequest request){
+        if (num <= 0 || num > 20){
+            throw new BusinessException(PARAM_ERROR);
+        }
+        User currentUser = userService.getCurrentUser(request);
+        return ResultUtil.success(userService.matchUser1(num,currentUser));
+    }
+
+    /**
+     * 获取最匹配的用户：优化二
+     * @param num
+     * @param request
+     * @return
+     */
+    @GetMapping("/match2")
+    public BaseResponse<List<User>> matchUsers2(int num,HttpServletRequest request){
+        if (num <= 0 || num > 20){
+            throw new BusinessException(PARAM_ERROR);
+        }
+        User currentUser = userService.getCurrentUser(request);
+        return ResultUtil.success(userService.matchUser2(num,currentUser));
+    }
+
+    /**
+     * 获取最匹配的用户：优化三
+     * @param num
+     * @param request
+     * @return
+     */
+    @GetMapping("/match3")
+    public BaseResponse<List<User>> matchUsers3(int num,HttpServletRequest request){
+        if (num <= 0 || num > 20){
+            throw new BusinessException(PARAM_ERROR);
+        }
+        User currentUser = userService.getCurrentUser(request);
+        return ResultUtil.success(userService.matchUser3(num,currentUser));
+    }
 }

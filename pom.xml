@@ -123,6 +123,12 @@
             <artifactId>redisson</artifactId>
             <version>3.24.3</version>
         </dependency>
+<!--lucene提供的专门用于计算堆内存占用大小的工具类：RamUsageEstimator-->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>4.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

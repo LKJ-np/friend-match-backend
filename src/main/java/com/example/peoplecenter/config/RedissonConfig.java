@@ -40,7 +40,6 @@ public class RedissonConfig {
         // 2. 创建实例
         RedissonClient redisson = Redisson.create(config);
         return redisson;
-
     }
 
     /**

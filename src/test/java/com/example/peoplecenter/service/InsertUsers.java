@@ -1,17 +1,28 @@
-package com.example.peoplecenter.service;
-
-
-import org.springframework.boot.test.context.SpringBootTest;
-
-/**
- * @author: lkj
- * @ClassName: friend-backend01
- * @Description:  用户单元测试，注意打包要删掉或者忽略，不然打包一次插入一次
- */
-
-@SpringBootTest
-public class InsertUsers {
-
+//package com.example.peoplecenter.service;
+//
+//
+//import com.example.peoplecenter.model.domain.User;
+//import org.apache.tomcat.util.threads.ThreadPoolExecutor;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.util.StopWatch;
+//import javax.annotation.Resource;
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.concurrent.ArrayBlockingQueue;
+//import java.util.concurrent.CompletableFuture;
+//import java.util.concurrent.ExecutorService;
+//import java.util.concurrent.TimeUnit;
+//
+///**
+// * @author: lkj
+// * @ClassName: friend-backend01
+// * @Description:  用户单元测试，注意打包要删掉或者忽略，不然打包一次插入一次
+// */
+//
+//@SpringBootTest
+//public class InsertUsers {
+//
 //    @Resource
 //    private UserService userService;
 //
@@ -22,7 +33,7 @@ public class InsertUsers {
 //    public void doInsertUser() {
 //        StopWatch stopWatch = new StopWatch();
 //        stopWatch.start();
-//        final int INSERT_NUM = 100000;
+//        final int INSERT_NUM = 1000000;
 //        List<User> userList = new ArrayList<>();
 //        for (int i = 0; i < INSERT_NUM; i++) {
 //            User user = new User();
@@ -116,7 +127,7 @@ public class InsertUsers {
 //        //分十组
 //        int j = 0;
 //        //批量插入的数据大小
-//        int batchsize = 10000;
+//        int batchsize = 25000;
 //        List<CompletableFuture<Void>> futureList = new ArrayList<>();
 //        //i就是线程
 //        for (int i = 0; i < 40; i++) {
@@ -153,6 +164,6 @@ public class InsertUsers {
 //        System.out.println(stopWatch.getLastTaskTimeMillis());
 //
 //    }
-}
-
-
+//}
+//
+//
